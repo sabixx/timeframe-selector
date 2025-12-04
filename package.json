@@ -1,0 +1,13 @@
+{
+  "name": "timeframe-selector",
+  "version": "1.0.0",
+  "description": "Productboard-style timeframe selector component",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx live-server ."
+  },
+  "keywords": ["timeframe", "selector", "date-picker", "react"],
+  "author": "",
+  "license": "ISC"
+}
