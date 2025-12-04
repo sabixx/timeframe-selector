@@ -363,6 +363,15 @@ function SectionHeader({ title }) {
 function YearSelector({ selectedYears, visibleYearStart, onToggleYear, onNavigate, disabled }) {
     const years = [visibleYearStart, visibleYearStart + 1];
 
+    // Calculate range for highlighting in-between years
+    const minYear = selectedYears.length > 0 ? Math.min(...selectedYears) : null;
+    const maxYear = selectedYears.length > 0 ? Math.max(...selectedYears) : null;
+
+    const isInRange = (year) => {
+        if (minYear === null || maxYear === null) return false;
+        return year >= minYear && year <= maxYear;
+    };
+
     return (
         <div className="selection-row">
             <button className="nav-button" onClick={() => onNavigate(-2)}>
@@ -372,7 +381,7 @@ function YearSelector({ selectedYears, visibleYearStart, onToggleYear, onNavigat
                 {years.map(year => (
                     <button
                         key={year}
-                        className={`selection-item ${selectedYears.includes(year) ? 'selected' : ''} ${disabled ? 'disabled' : ''}`}
+                        className={`selection-item ${isInRange(year) ? 'selected' : ''} ${disabled ? 'disabled' : ''}`}
                         onClick={() => !disabled && onToggleYear(year)}
                     >
                         {year}
@@ -387,8 +396,21 @@ function YearSelector({ selectedYears, visibleYearStart, onToggleYear, onNavigat
 }
 
 function QuarterSelector({ selectedQuarters, visibleYear, onToggleQuarter, onNavigate, disabled }) {
-    const isSelected = (quarter) => {
-        return selectedQuarters.some(q => q.year === visibleYear && q.quarter === quarter);
+    // Calculate range for highlighting in-between quarters
+    const getQuarterValue = (q) => q.year * 4 + q.quarter;
+
+    let minQuarter = null;
+    let maxQuarter = null;
+    if (selectedQuarters.length > 0) {
+        const values = selectedQuarters.map(getQuarterValue);
+        minQuarter = Math.min(...values);
+        maxQuarter = Math.max(...values);
+    }
+
+    const isInRange = (quarter) => {
+        if (minQuarter === null || maxQuarter === null) return false;
+        const value = visibleYear * 4 + quarter;
+        return value >= minQuarter && value <= maxQuarter;
     };
 
     return (
@@ -403,7 +425,7 @@ function QuarterSelector({ selectedQuarters, visibleYear, onToggleQuarter, onNav
                     {QUARTERS.map((label, index) => (
                         <button
                             key={index}
-                            className={`selection-item ${isSelected(index) ? 'selected' : ''} ${disabled ? 'disabled' : ''}`}
+                            className={`selection-item ${isInRange(index) ? 'selected' : ''} ${disabled ? 'disabled' : ''}`}
                             onClick={() => !disabled && onToggleQuarter(visibleYear, index)}
                         >
                             {label}
@@ -424,8 +446,21 @@ function MonthSelector({ selectedMonths, visibleYear, visibleMonthStart, onToggl
         visibleMonths.push((visibleMonthStart + i) % 12);
     }
 
-    const isSelected = (month) => {
-        return selectedMonths.some(m => m.year === visibleYear && m.month === month);
+    // Calculate range for highlighting in-between months
+    const getMonthValue = (m) => m.year * 12 + m.month;
+
+    let minMonth = null;
+    let maxMonth = null;
+    if (selectedMonths.length > 0) {
+        const values = selectedMonths.map(getMonthValue);
+        minMonth = Math.min(...values);
+        maxMonth = Math.max(...values);
+    }
+
+    const isInRange = (month) => {
+        if (minMonth === null || maxMonth === null) return false;
+        const value = visibleYear * 12 + month;
+        return value >= minMonth && value <= maxMonth;
     };
 
     return (
@@ -440,7 +475,7 @@ function MonthSelector({ selectedMonths, visibleYear, visibleMonthStart, onToggl
                     {visibleMonths.map((month) => (
                         <button
                             key={month}
-                            className={`selection-item ${isSelected(month) ? 'selected' : ''} ${disabled ? 'disabled' : ''}`}
+                            className={`selection-item ${isInRange(month) ? 'selected' : ''} ${disabled ? 'disabled' : ''}`}
                             onClick={() => !disabled && onToggleMonth(visibleYear, month)}
                         >
                             {MONTHS[month]}
