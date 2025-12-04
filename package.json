@@ -8,6 +8,6 @@
     "dev": "npx live-server ."
   },
   "keywords": ["timeframe", "selector", "date-picker", "react"],
-  "author": "",
-  "license": "ISC"
+  "author": "Jens Sabitzer",
+  "license": "SEE LICENSE IN LICENSE"
 }

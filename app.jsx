@@ -736,7 +736,7 @@ function HighLevelSelector({ state, onStateChange }) {
                 visibleYearStart={visibleYearStart}
                 onToggleYear={handleToggleYear}
                 onNavigate={(delta) => setVisibleYearStart(v => v + delta)}
-                disabled={hasQuarterSelection || hasMonthSelection}
+                disabled={false}
             />
 
             <QuarterSelector
@@ -744,7 +744,7 @@ function HighLevelSelector({ state, onStateChange }) {
                 visibleYear={quarterYear}
                 onToggleQuarter={handleToggleQuarter}
                 onNavigate={(delta) => setQuarterYear(y => y + delta)}
-                disabled={hasYearSelection || hasMonthSelection}
+                disabled={false}
             />
 
             <MonthSelector
@@ -766,7 +766,7 @@ function HighLevelSelector({ state, onStateChange }) {
                     setMonthStart(newStart);
                     setMonthYear(newYear);
                 }}
-                disabled={hasYearSelection || hasQuarterSelection}
+                disabled={false}
             />
         </>
     );
